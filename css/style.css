@@ -1,0 +1,807 @@
+/* ============================================================
+   SmartLead AI — style.css
+   Sprint 1: UI and Presentation Layout
+   
+   Sections:
+   1. CSS Reset
+   2. CSS Variables  (Design Tokens)
+   3. Global Styles
+   4. Typography
+   5. Layout & Grids
+   6. Components     (buttons, cards, inputs)
+   7. Wizard UI      (progress bars, questions)
+   8. Dashboard UI   (pills, tables, insights)
+   9. Animations
+   10. Media Queries
+============================================================ */
+
+
+/* ===========================
+   1. CSS Reset
+=========================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+input,
+select,
+button {
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+
+/* ===========================
+   2. CSS Variables (Design Tokens)
+=========================== */
+
+:root {
+  /* --- Colors --- */
+  --bg:             #0F172A;   /* Deep Navy */
+  --surface:        #1E293B;   /* Slate Card BG */
+  --surface-hover:  #263348;
+  --primary:        #2563EB;   /* Royal Blue */
+  --primary-hover:  #1D4ED8;
+  --primary-glow:   rgba(37, 99, 235, 0.2);
+  --success:        #10B981;   /* Emerald Green */
+  --success-glow:   rgba(16, 185, 129, 0.2);
+  --warning:        #F59E0B;   /* Amber Yellow */
+  --warning-glow:   rgba(245, 158, 11, 0.2);
+  --danger:         #EF4444;   /* Red */
+  --text:           #F8FAFC;   /* Main White */
+  --text-secondary: #CBD5E1;   /* Slate White */
+  --text-muted:     #64748B;   /* Muted Gray */
+  --border:         rgba(255, 255, 255, 0.08);
+  --border-strong:  rgba(255, 255, 255, 0.15);
+
+  /* --- Spacing --- */
+  --space-xs:   4px;
+  --space-sm:   8px;
+  --space-md:   16px;
+  --space-lg:   24px;
+  --space-xl:   32px;
+  --space-2xl:  48px;
+
+  /* --- Border Radius --- */
+  --radius-sm:   6px;
+  --radius-md:   12px;
+  --radius-lg:   16px;
+  --radius-full: 9999px;
+
+  /* --- Shadows --- */
+  --shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md:  0 4px 6px rgba(0, 0, 0, 0.3);
+  --shadow-lg:  0 10px 15px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 20px var(--primary-glow);
+
+  /* --- Transitions --- */
+  --transition-fast:   150ms ease;
+  --transition-base:   250ms ease;
+
+  /* --- Layout & Typography --- */
+  --max-width:      1200px;
+  --nav-height:     68px;
+  --font-sans:      'Inter', system-ui, sans-serif;
+  
+  /* Font Sizes */
+  --text-xs:    0.75rem;
+  --text-sm:    0.875rem;
+  --text-base:  1rem;
+  --text-lg:    1.125rem;
+  --text-xl:    1.25rem;
+  --text-2xl:   1.5rem;
+  --text-3xl:   2rem;
+
+  --weight-normal:    400;
+  --weight-medium:    500;
+  --weight-semibold:  600;
+  --weight-bold:      700;
+  --weight-extrabold: 800;
+}
+
+
+/* ===========================
+   3. Global Styles
+=========================== */
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+
+  /* Baseline dot texture grid */
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgba(255, 255, 255, 0.03) 1px,
+    transparent 0
+  );
+  background-size: 32px 32px;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--surface-hover);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+
+/* ===========================
+   4. Typography
+=========================== */
+
+h1, h2, h3, h4 {
+  font-weight: var(--weight-bold);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+p {
+  color: var(--text-secondary);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--text) 40%, var(--text-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-success { color: var(--success); }
+.text-primary { color: var(--primary); }
+.text-warning { color: var(--warning); }
+
+
+/* ===========================
+   5. Layout & Grids
+=========================== */
+
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+/* Fixed Navbar style */
+#navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-height);
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.logo-icon {
+  font-size: var(--text-xl);
+}
+
+.logo-text {
+  font-weight: var(--weight-bold);
+  font-size: var(--text-lg);
+}
+
+.product-badge {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  background: var(--primary-glow);
+  color: var(--primary);
+  border: 1px solid rgba(37, 99, 235, 0.3);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+}
+
+/* Side-by-side main container on Desktop */
+.main-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: var(--space-xl);
+  padding-top: calc(var(--nav-height) + var(--space-xl));
+  padding-bottom: var(--space-2xl);
+  align-items: start;
+}
+
+.layout-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-md);
+}
+
+
+/* ===========================
+   6. Components
+=========================== */
+
+/* --- Buttons --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  transition: all var(--transition-base);
+  user-select: none;
+}
+
+.btn-sm {
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--text-xs);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--text);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-strong);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  border-color: var(--primary);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text);
+  transform: translateY(-2px);
+}
+
+.btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* --- Form Inputs --- */
+.input-wrapper {
+  margin-top: var(--space-md);
+}
+
+.form-input {
+  width: 100%;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  color: var(--text);
+  font-size: var(--text-sm);
+  outline: none;
+  transition: all var(--transition-base);
+}
+
+.form-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+/* Custom Select Dropdowns */
+.select-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+.option-btn {
+  width: 100%;
+  text-align: left;
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  transition: all var(--transition-base);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.option-btn:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-strong);
+  transform: translateX(4px);
+}
+
+.option-btn.selected {
+  background: var(--primary-glow);
+  border-color: var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.option-bullet {
+  width: 18px;
+  height: 18px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+}
+
+.option-btn.selected .option-bullet {
+  border-color: var(--primary);
+  background: var(--primary);
+}
+
+
+/* ===========================
+   7. Wizard UI
+=========================== */
+
+.wizard-header {
+  margin-bottom: var(--space-xl);
+}
+
+.wizard-title {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-extrabold);
+  margin-bottom: var(--space-xs);
+}
+
+.wizard-subtitle {
+  font-size: var(--text-sm);
+}
+
+/* Metrics Row */
+.metrics-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.metric-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.metric-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.metric-label {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--text-secondary);
+}
+
+.metric-badge {
+  font-size: 10px;
+  font-weight: var(--weight-bold);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-full);
+}
+
+.meter-bar-bg {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.meter-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--primary);
+  border-radius: var(--radius-full);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.metric-value {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  margin-top: 2px;
+}
+
+/* Progress fillings colors */
+.progress-cold { background: var(--text-muted); }
+.progress-warm { background: var(--primary); }
+.progress-hot  { background: var(--success); }
+
+/* Badge indicator colors */
+.status-cold { background: rgba(100, 116, 139, 0.15); color: var(--text-muted); }
+.status-warm { background: rgba(37, 99, 235, 0.15); color: var(--primary); }
+.status-hot  { background: rgba(16, 185, 129, 0.15); color: var(--success); }
+
+/* Wizard card content spacing */
+.wizard-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 290px;
+}
+
+.step-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: var(--space-sm);
+}
+
+.step-intro {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+.step-indicator {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  color: var(--primary);
+}
+
+.question-label {
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-sm);
+  line-height: 1.4;
+}
+
+.step-content-area {
+  flex: 1;
+}
+
+.wizard-navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--space-xl);
+}
+
+
+/* ===========================
+   8. Dashboard UI
+=========================== */
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-lg);
+}
+
+.dashboard-title {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-extrabold);
+}
+
+/* Grid layout for summary metrics */
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+
+.insight-card {
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-sm);
+  text-align: center;
+}
+
+.insight-label {
+  display: block;
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xs);
+}
+
+.insight-value {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+}
+
+/* Filter buttons */
+.filter-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: var(--space-sm);
+}
+
+.filter-label {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+.filter-pills {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.pill {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  transition: all var(--transition-fast);
+}
+
+.pill:hover {
+  background: var(--surface-hover);
+}
+
+.pill.active {
+  background: var(--primary);
+  color: var(--text);
+  border-color: var(--primary);
+}
+
+/* Leads Records list */
+.leads-list-wrapper {
+  min-height: 200px;
+}
+
+.leads-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  max-height: 350px;
+  overflow-y: auto;
+  padding-right: var(--space-xs);
+}
+
+/* Lead item block */
+.lead-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  transition: all var(--transition-base);
+  animation: fadeIn 0.4s ease both;
+}
+
+.lead-item:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-strong);
+}
+
+.lead-item-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.lead-status-dot {
+  font-size: var(--text-base);
+}
+
+.lead-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.lead-name {
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-sm);
+}
+
+.lead-meta {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.lead-item-right {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-xs);
+}
+
+.lead-score {
+  font-weight: var(--weight-bold);
+  font-size: var(--text-sm);
+}
+
+.lead-date {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+/* Empty State Styling */
+.empty-state {
+  text-align: center;
+  padding: var(--space-2xl) 0;
+}
+
+.empty-icon {
+  font-size: var(--text-3xl);
+  margin-bottom: var(--space-sm);
+}
+
+.empty-title {
+  font-size: var(--text-base);
+  margin-bottom: var(--space-xs);
+}
+
+.empty-subtitle {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.hide {
+  display: none !important;
+}
+
+
+/* ===========================
+   9. Animations
+=========================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade {
+  animation: fadeIn 0.4s ease both;
+}
+
+
+/* ===========================
+   10. Footer
+=========================== */
+
+#footer {
+  text-align: center;
+  padding: var(--space-lg) 0;
+  border-top: 1px solid var(--border);
+  margin-top: var(--space-xl);
+}
+
+#footer p {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+
+/* ===========================
+   11. Media Queries
+=========================== */
+
+/* --- Tablet Mode (Stacked view) --- */
+@media (max-width: 900px) {
+  .main-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  .insights-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* --- Mobile Mode --- */
+@media (max-width: 600px) {
+  body {
+    font-size: var(--text-sm);
+  }
+
+  .main-layout {
+    padding-top: calc(var(--nav-height) + var(--space-md));
+    gap: var(--space-md);
+  }
+
+  .layout-card {
+    padding: var(--space-md);
+  }
+
+  .metrics-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .insights-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-xs);
+  }
+
+  .filter-pills {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: var(--space-xs);
+  }
+}

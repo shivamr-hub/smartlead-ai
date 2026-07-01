@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="SmartLead AI — Turn website visitors into qualified sales leads with an interactive scoring wizard and live analytics dashboard." />
+  <title>SmartLead AI | Shivam AI Studio</title>
+
+  <!-- Reused Inter Font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+
+  <!-- Ecosystem stylesheet connection -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+  <!-- ============================================================
+       TOP HEADER / NAVIGATION BAR
+  ============================================================ -->
+  <nav id="navbar">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <span class="logo-icon">📈</span>
+        <span class="logo-text">Shivam AI Studio</span>
+      </div>
+      <div class="nav-links">
+        <span class="product-badge">SmartLead AI</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       MAIN CONTENT CONTAINER
+       Lays out the Wizard and Dashboard side-by-side on desktop.
+  ============================================================ -->
+  <main class="main-layout container">
+
+    <!-- ──────────────────────────────────────────────────────────
+         WIZARD SECTION: The qualification form flow
+    ────────────────────────────────────────────────────────── -->
+    <section id="wizard-section" class="layout-card">
+      
+      <div class="wizard-header">
+        <h1 class="wizard-title text-gradient">SmartLead AI</h1>
+        <p class="wizard-subtitle">Qualify and score sales opportunities in real-time</p>
+      </div>
+
+      <!-- Real-time Metrics Panels -->
+      <div class="metrics-panel">
+        
+        <!-- Quality Score Meter -->
+        <div class="metric-container" id="quality-container">
+          <div class="metric-header">
+            <span class="metric-label">Lead Quality</span>
+            <span class="metric-badge status-cold" id="quality-badge">⚪ COLD</span>
+          </div>
+          <div class="meter-bar-bg">
+            <div class="meter-bar-fill progress-cold" id="quality-fill" style="width: 0%;"></div>
+          </div>
+          <span class="metric-value" id="quality-value">0%</span>
+        </div>
+
+        <!-- Completion Confidence Meter -->
+        <div class="metric-container" id="confidence-container">
+          <div class="metric-header">
+            <span class="metric-label">Profile Completeness</span>
+          </div>
+          <div class="meter-bar-bg">
+            <div class="meter-bar-fill" id="confidence-fill" style="width: 0%;"></div>
+          </div>
+          <span class="metric-value" id="confidence-value">0%</span>
+        </div>
+
+      </div>
+
+      <!-- Wizard Card Frame -->
+      <div class="wizard-card" id="wizard-card">
+        
+        <div class="step-meta">
+          <span class="step-intro" id="step-intro">Let's learn a little about you.</span>
+          <span class="step-indicator" id="step-indicator">Question 1 of 6</span>
+        </div>
+
+        <!-- Injected step inputs (managed by js/ui.js) -->
+        <div class="step-content-area" id="step-content">
+          <!-- Sample Skeleton Input (overridden by UI JS) -->
+          <h2 class="question-label">What's your name?</h2>
+          <div class="input-wrapper">
+            <input type="text" placeholder="e.g. Priya Sharma" class="form-input" />
+          </div>
+        </div>
+
+        <!-- Wizard Navigation -->
+        <div class="wizard-navigation">
+          <button class="btn btn-secondary" id="btn-prev" disabled>← Previous</button>
+          <button class="btn btn-primary" id="btn-next">Continue →</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────────────────────────────────
+         DASHBOARD SECTION: Scored leads & summary statistics
+    ────────────────────────────────────────────────────────── -->
+    <section id="dashboard-section" class="layout-card">
+
+      <!-- Section Title & Export -->
+      <div class="dashboard-header">
+        <h2 class="dashboard-title">Lead Pipeline</h2>
+        <button class="btn btn-primary btn-sm" id="btn-export">
+          📥 Export CSV
+        </button>
+      </div>
+
+      <!-- Summary Analytics Row -->
+      <div class="insights-grid">
+        
+        <div class="insight-card" id="card-total-leads">
+          <span class="insight-label">Total Leads</span>
+          <span class="insight-value" id="insight-total">0</span>
+        </div>
+
+        <div class="insight-card" id="card-hot-leads">
+          <span class="insight-label">Hot Leads</span>
+          <span class="insight-value text-success" id="insight-hot">0</span>
+        </div>
+
+        <div class="insight-card" id="card-avg-score">
+          <span class="insight-label">Average Score</span>
+          <span class="insight-value text-primary" id="insight-avg">0%</span>
+        </div>
+
+        <div class="insight-card" id="card-conv-ready">
+          <span class="insight-label">Conversion Ready</span>
+          <span class="insight-value text-warning" id="insight-ready">0%</span>
+        </div>
+
+      </div>
+
+      <!-- Filter pills -->
+      <div class="filter-wrapper">
+        <span class="filter-label">Filter:</span>
+        <div class="filter-pills" id="filter-pills">
+          <button class="pill active" data-filter="all">All</button>
+          <button class="pill" data-filter="hot">🟢 Hot</button>
+          <button class="pill" data-filter="warm">🔵 Warm</button>
+          <button class="pill" data-filter="cold">⚪ Cold</button>
+        </div>
+      </div>
+
+      <!-- Leads Pipeline list container -->
+      <div class="leads-list-wrapper">
+        
+        <!-- Empty State Container -->
+        <div class="empty-state" id="dashboard-empty-state">
+          <div class="empty-icon">📭</div>
+          <h3 class="empty-title">No leads yet</h3>
+          <p class="empty-subtitle">
+            Complete the qualification wizard to see your first lead appear here in real-time.
+          </p>
+        </div>
+
+        <!-- Leads Scroll Container -->
+        <div class="leads-list hide" id="leads-list">
+          <!-- Injected leads elements (managed by js/ui.js) -->
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer id="footer">
+    <p>© 2025 Shivam AI Studio. All rights reserved.</p>
+  </footer>
+
+  <!-- Javascript Modules Connection -->
+  <script src="js/utils.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="data/lead-config.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/lead-engine.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+
+</html>
