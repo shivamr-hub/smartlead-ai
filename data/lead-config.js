@@ -72,7 +72,7 @@ const LEAD_CONFIG = {
       id: "phone",
       type: "phone",
       label: "And your phone number?",
-      placeholder: "e.g. 98765 43210"
+      placeholder: "e.g. 63555 79882"
     }
   ],
 
