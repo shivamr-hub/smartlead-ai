@@ -1,0 +1,28 @@
+# ============================================================
+# .gitignore — SmartLead AI
+# Tells Git which files NOT to track or upload to GitHub.
+# ============================================================
+
+# --- OS-generated files ---
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+
+# --- Editor/IDE files ---
+.vscode/
+*.code-workspace
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# --- Environment & config files ---
+.env
+.env.local
+*.env
+
+# --- Temporary files ---
+*.tmp
+*.bak
+*.swp
+*~
