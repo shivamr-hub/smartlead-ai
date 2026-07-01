@@ -1,7 +1,15 @@
 /* ============================================================
    utils.js — SmartLead AI
-   Sprint 0: Setup / Skeletons
+   Sprint 1/2: Helper Functions
 ============================================================ */
+
+/**
+ * Capitalizes first letter of string.
+ */
+function capitalize(text) {
+  if (!text) return '';
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
 
 /**
  * Normalizes input string.

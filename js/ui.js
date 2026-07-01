@@ -39,11 +39,14 @@ const DOM = {
 function renderStep(question, index, total, answers, onSelect) {
   // Update step indicators
   DOM.stepIndicator.textContent = `Question ${index + 1} of ${total}`;
+  DOM.stepIndicator.style.display = 'inline';
   DOM.stepIntro.textContent = index === 0 ? "Let's start with your details." : "Tell us about your project.";
 
   // Set navigation buttons state
   DOM.btnPrev.disabled = index === 0;
-  DOM.btnNext.textContent = index === total - 1 ? "Submit Lead ✓" : "Continue →";
+  DOM.btnPrev.style.display = 'inline-flex';
+  DOM.btnNext.style.display = 'inline-flex';
+  DOM.btnNext.textContent = index === total - 1 ? "Calculate Lead Score ✓" : "Continue →";
 
   // Clear previous step content
   DOM.stepContent.innerHTML = '';
@@ -248,4 +251,55 @@ function showStatusMessage(text, type = 'info') {
     if (el) el.remove();
   }, 3500);
 }
+
+/**
+ * Renders the premium final success screen state inside the wizard panel.
+ * 
+ * @param {number} score - The final calculated lead score
+ * @param {string} category - 'HOT' | 'WARM' | 'COLD'
+ * @param {Function} onReset - Callback function when 'Start New Qualification' is clicked
+ */
+function renderSuccess(score, category, onReset) {
+  // Hide default step indicator texts and prev/next wizard navigation
+  DOM.stepIndicator.style.display = 'none';
+  DOM.stepIntro.textContent = "Lead Qualification Completed";
+  DOM.btnPrev.style.display = 'none';
+  DOM.btnNext.style.display = 'none';
+
+  let badgeColor = 'status-cold';
+  let badgeIcon = '⚪';
+
+  if (category === 'HOT') {
+    badgeColor = 'status-hot';
+    badgeIcon = '🟢';
+  } else if (category === 'WARM') {
+    badgeColor = 'status-warm';
+    badgeIcon = '🔵';
+  }
+
+  // Inject success message layout card
+  DOM.stepContent.innerHTML = `
+    <div class="success-screen animate-fade" style="text-align: center; padding: var(--space-md) 0;">
+      <div style="font-size: var(--text-3xl); margin-bottom: var(--space-sm);">🎉</div>
+      <h2 class="question-label" style="margin-bottom: var(--space-xs);">Lead Successfully Qualified</h2>
+      <p style="font-size: var(--text-sm); color: var(--text-secondary); margin-bottom: var(--space-md);">
+        The lead has been added to your dashboard and is ready for follow-up.
+      </p>
+
+      <div style="background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: var(--radius-md); padding: var(--space-md); margin-bottom: var(--space-lg); display: inline-block; min-width: 200px;">
+        <div style="font-size: var(--text-xs); color: var(--text-muted); margin-bottom: var(--space-xs);">LEAD SCORE</div>
+        <div style="font-size: var(--text-2xl); font-weight: var(--weight-bold); margin-bottom: var(--space-xs);">${score}%</div>
+        <span class="metric-badge ${badgeColor}" style="font-size: var(--text-xs);">${badgeIcon} ${category}</span>
+      </div>
+
+      <div>
+        <button class="btn btn-primary" id="btn-reset-wizard">Start New Qualification</button>
+      </div>
+    </div>
+  `;
+
+  // Bind the reset action to wizard button
+  document.getElementById('btn-reset-wizard').addEventListener('click', onReset);
+}
+
 

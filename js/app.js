@@ -142,11 +142,8 @@ function _submitLeadForm() {
   // Update in-memory list
   allLeads.push(newLead);
 
-  // Trigger UI alert success
-  showStatusMessage("Lead qualified successfully! 🎉", "success");
-
-  // Reset wizard flow
-  _resetWizard();
+  // Render premium Success Card state in the Wizard
+  renderSuccess(finalScore, leadCategory, _resetWizard);
 
   // Reload dashboards
   renderInsights(allLeads);
@@ -170,7 +167,8 @@ function _resetWizard() {
 function _triggerCSVDownload() {
   if (allLeads.length === 0) return;
 
-  const csvContent = convertToCSV(allLeads);
+  // Prepend UTF-8 Byte Order Mark (BOM) to ensure Excel opens file with Jose/Shivam names cleanly
+  const csvContent = "\uFEFF" + convertToCSV(allLeads);
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   
